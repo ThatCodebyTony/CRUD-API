@@ -20,3 +20,14 @@ app.get('/todos', (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+
+// POST /todos - Add a new to-do item
+app.post('/todos', (req, res) => {
+    const newTodo = {
+    id: todos.length + 1,
+    task: req.body.task,
+    completed: false
+    };
+    todos.push(newTodo);
+    res.status(201).json(newTodo);
+    });
