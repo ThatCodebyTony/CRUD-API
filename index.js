@@ -16,11 +16,6 @@ app.get('/todos', (req, res) => {
   res.json(todos);
 });
 
-// Start the server
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
-
 // POST /todos - Add a new to-do item
 app.post('/todos', (req, res) => {
     const newTodo = {
@@ -31,3 +26,8 @@ app.post('/todos', (req, res) => {
     todos.push(newTodo);
     res.status(201).json(newTodo);
     });
+
+// Start the server
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});
