@@ -12,8 +12,18 @@ let todos = [
 ];
 
 // GET /todos - Retrieve all to-do items
+// GET /todos - Retrieve all to-do items, or filter by completion status if provided
 app.get('/todos', (req, res) => {
-    res.json(todos);
+  const { completed } = req.query;  // Get the 'completed' query parameter
+
+  // If the 'completed' parameter is provided, filter the todos array
+  if (completed !== undefined) {
+      const isCompleted = completed === 'true';  // Convert 'true'/'false' string to boolean
+      const filteredTodos = todos.filter(todo => todo.completed === isCompleted);
+      return res.json(filteredTodos);  // Return only the filtered list
+  }
+  // If no 'completed' query parameter is provided, return all todos
+  res.json(todos); 
 });
 
 // PUT /todos/complete-all - Mark all to-do items as completed
