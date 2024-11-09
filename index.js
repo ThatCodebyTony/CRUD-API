@@ -8,12 +8,20 @@ app.use(express.json());
 // Sample data
 let todos = [
     { id: 1, task: "Learn Node.js", completed: false, priority: "medium" },
-    { id: 2, task: "Build a REST API", completed: false, priority: "high" }
+    { id: 2, task: "Build a REST API", completed: false, priority: "low" }
 ];
 
 // GET /todos - Retrieve all to-do items
 app.get('/todos', (req, res) => {
     res.json(todos);
+});
+
+// PUT /todos/complete-all - Mark all to-do items as completed
+app.put('/todos/complete-all', (req, res) => {
+  todos.forEach(todo => {
+      todo.completed = true;  // Mark each to-do item as completed
+  });
+  res.status(200).json({ message: "All to-do items have been marked as completed." });
 });
 
 // POST /todos - Add a new to-do item
