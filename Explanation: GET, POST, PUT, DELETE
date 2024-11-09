@@ -1,0 +1,29 @@
+GET:
+
+    Purpose: It's like asking for information.
+    What it does: It simply retrieves data from the server. For example, when you want to see your list of to-dos, you use a GET request.
+    Important note: GET should never change anything on the server. It’s just for viewing or retrieving information, not modifying it.
+
+Example: If you check your to-do list, you're just looking at what tasks you have. You're not changing anything.
+
+POST:
+
+    Purpose: It's like adding something new.
+    What it does: It sends data to the server to create something new or add a new item. For example, when you add a new task to your to-do list, you use POST.
+    Important note: POST modifies data—it can add, create, or even change things on the server.
+
+Example: When you write a new task on your to-do list, you are adding something new. That's what POST does.
+
+PUT:
+
+    Purpose: It’s like updating all the tasks on your to-do list to mark them as completed.
+    What it does: The PUT /todos/complete-all request updates all the to-do items in the list. Specifically, it changes the completed status of every single to-do item to true, marking them as completed.
+    Important note: This is a bulk update, meaning that instead of updating just one item, it updates all items in the list. It replaces the completed status for every to-do item.
+
+Example: Imagine you have a to-do list with several tasks, but you want to mark all of them as done. You use PUT to update all the to-dos at once.
+
+DELETE:
+
+    Purpose: It’s like removing a specific task from your to-do list.
+    What it does: The DELETE request is used to remove a specific to-do item from the list. In this case, you specify which to-do to remove by providing its ID in the URL. The server finds that to-do and deletes it from the list.
+    Important note: DELETE removes the item permanently. After it’s deleted, it no longer exists in the list.
