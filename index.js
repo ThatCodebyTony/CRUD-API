@@ -48,16 +48,30 @@ app.post('/todos', (req, res) => {
 
 // PUT /todos/:id - Update an existing to-do item
 app.put('/todos/:id', (req, res) => {
-  const id = parseInt(req.params.id); // Parse the ID from the URL
-  const todo = todos.find(t => t.id === id); // Find the todo by ID
-  if (!todo) {
-      return res.status(404).send("To-Do item not found"); // Return 404 if not found
+  const id = parseInt(req.params.id); // Get the ID from the URL
+  const { task, completed } = req.body; // Get the task and completed status from the request body
+
+  // Check if there's anything to update
+  if (task === undefined && completed === undefined) {
+    return res.status(400).json({ error: "No fields to update" });
   }
-  // Update the task and completed status
-  todo.task = req.body.task || todo.task;
-  todo.completed = req.body.completed !== undefined ? req.body.completed : todo.completed;
-  res.json(todo); // Return the updated todo
+
+  // Set up the SQL query to update the todo item
+  const query = `UPDATE todos SET task = COALESCE(?, task), completed = COALESCE(?, completed) WHERE id = ?`;
+  const queryParams = [task, completed, id];
+
+  db.run(query, queryParams, function (err) {
+    if (err) {
+      console.error(err.message);
+      res.status(500).json({ error: "Failed to update todo" });
+    } else if (this.changes === 0) {
+      res.status(404).json({ error: "Todo not found" });
+    } else {
+      res.json({ message: "Todo updated successfully" });
+    }
+  });
 });
+
 
 
 // DELETE /todos/:id - Delete a to-do item
