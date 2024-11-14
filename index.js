@@ -74,3 +74,39 @@ app.delete('/todos/:id', (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
+
+
+// This code gets a list of "todos" from a database and can filter the list by whether they’re completed or not if you specify that in the URL. 
+// It then sends back the list or an error message if something goes wrong.
+
+
+//Extract "completed" from the query: 
+// This checks if there's a "completed" parameter in the URL (like /todos?completed=true). If it’s there, it will be used to filter the list of todos.
+app.get('/todos', (req, res) => { 
+  const { completed } = req.query; 
+
+  // Set up the SQL command: query starts as SELECT * FROM todos 
+  // Which means "get everything from the todos table." queryParams will store any values we need to pass to the query.
+  let query = 'SELECT * FROM todos';
+  const queryParams = [];
+
+  if (completed !== undefined) {
+    query += ' WHERE completed = ?';
+    if (completed.toLowerCase() === 'true') {
+      queryParams.push(1); // Push 1 for true: Completed todos
+    } else {
+      queryParams.push(0); // Push 0 for false or any other value: Incomplete todos
+    }
+  }
+
+  db.all(query, queryParams, (err, rows) => {
+    if (err) {
+      console.error(err.message);
+      res.status(500).json({ error: "Failed to retrieve todos" });
+    } else {
+      res.json(rows); // 4. Sends back the list of todos as a response
+    }
+  });
+});
+
+  
